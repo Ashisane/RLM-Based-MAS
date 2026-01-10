@@ -285,36 +285,51 @@ Return JSON only:
 
 
 def build_supervisor_prompt(backstory: str, conservative: AgentResult, aggressive: AgentResult) -> str:
-    """Supervisor prompt - picks between two reasonings WITHOUT seeing novel facts."""
+    """Supervisor prompt - acts as a JUDGE evaluating both arguments."""
     
-    return f"""You are an arbitrator deciding between two literary analysts.
+    return f"""You are a JUDGE deciding a dispute between two analysts about whether a backstory contradicts a novel.
 
-BACKSTORY BEING ANALYZED:
+THE BACKSTORY IN QUESTION:
 {backstory}
 
-ANALYST A (Conservative) says: {conservative.verdict.upper()}
-Reasoning: "{conservative.reasoning}"
+---
 
-ANALYST B (Aggressive) says: {aggressive.verdict.upper()}
-Reasoning: "{aggressive.reasoning}"
+ANALYST A (Conservative) verdict: {conservative.verdict.upper()}
+Their argument: "{conservative.reasoning}"
 
-Your task: Determine which analyst's reasoning is MORE LOGICALLY SOUND.
+---
 
-Consider:
-1. Does the reasoning cite a SPECIFIC error or conflict?
-2. Does the reasoning commit the fallacy of "absence = contradiction"?
-3. Does the reasoning identify a factual/historical error?
-4. Is the logic internally consistent?
+ANALYST B (Aggressive) verdict: {aggressive.verdict.upper()}  
+Their argument: "{aggressive.reasoning}"
 
-IMPORTANT:
-- "Novel doesn't mention X" is NOT a valid reason for contradiction
-- "X is not in the excerpt" is NOT a valid reason for contradiction
-- Specific factual errors (wrong dates, wrong names, wrong historical facts) ARE valid contradictions
+---
 
-Choose the more logical reasoning.
+YOUR TASK AS JUDGE:
+
+Evaluate BOTH arguments and decide which is correct. Consider:
+
+1. DOES ANALYST B CITE A REAL ERROR?
+   - If they say "Napoleon triumphed at Waterloo" - that's a real historical error (he lost)
+   - If they say "called X a first mate but novel says quartermaster" - that's a real title error
+   - If they say "novel doesn't mention X" - that's NOT an error (absence ≠ contradiction)
+
+2. IS ANALYST B'S ERROR ACTUALLY IN THE BACKSTORY?
+   - Read the backstory above carefully
+   - Does it actually contain the error they claim?
+   - Sometimes analysts imagine errors that aren't there
+
+3. IS ANALYST A CORRECT THAT THERE'S NO CONFLICT?
+   - Did they miss something obvious?
+   - Or are they right that the backstory is compatible?
+
+DECISION RULES:
+- If Analyst B found a REAL, VERIFIABLE factual error in the backstory → Choose AGGRESSIVE
+- If Analyst B's "error" is just "novel doesn't mention this" → Choose CONSERVATIVE  
+- If Analyst B claims an error but you can't verify it exists in the backstory → Choose CONSERVATIVE
+- If Analyst B found a genuine contradiction (wrong date, wrong name, wrong historical fact) → Choose AGGRESSIVE
 
 Return JSON only:
-{{"chosen": "conservative" or "aggressive", "reasoning": "why this reasoning is more sound"}}"""
+{{"chosen": "conservative" or "aggressive", "reasoning": "explain your verdict as judge"}}"""
 
 
 def parse_response(response: str) -> tuple[str, float, str]:
