@@ -1,0 +1,6 @@
+# Core dependencies
+python-dotenv>=1.0.0
+google-genai>=1.0.0
+
+# Standard library modules used (no install needed):
+# - asyncio, json, re, csv, time, pathlib, datetime, dataclasses
