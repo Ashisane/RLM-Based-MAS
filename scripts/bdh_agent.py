@@ -281,8 +281,14 @@ def hebbian_fusion(activations: list[NeuronActivation]) -> HebbianFusionResult:
             verdict = "contradict"
             confidence = 0.5 + (inhibitory_sum - excitatory_sum) / total * 0.4
     
-    reasons = [a.reasoning for a in activations if a.activation > 0.3]
-    reasoning = f"E={excitatory_sum:.2f} I={inhibitory_sum:.2f}. " + (reasons[0][:80] if reasons else "")
+    # Get the best reasoning from activated neurons
+    reasons = [a.reasoning for a in activations if a.activation > 0.3 and a.reasoning]
+    if reasons:
+        reasoning = reasons[0][:150]  # Use the strongest neuron's reasoning
+    elif verdict == "consistent":
+        reasoning = "No factual contradictions found between backstory and novel"
+    else:
+        reasoning = "Backstory contains factual inconsistencies with the novel"
     
     return HebbianFusionResult(verdict, round(confidence, 3), excitatory_sum, inhibitory_sum, agreement, reasoning)
 
@@ -316,7 +322,7 @@ async def bdh_fallback_verify(backstory: str, character: str, novel_text: str,
     # Hebbian fusion
     fusion = hebbian_fusion(list(activations))
     
-    return fusion.verdict, fusion.confidence, f"[BDH] {fusion.reasoning}"
+    return fusion.verdict, fusion.confidence, fusion.reasoning
 
 
 # For debugging - get detailed result

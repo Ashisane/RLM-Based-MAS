@@ -54,11 +54,8 @@ def gemini_query(prompt: str, model: str = ROOT_MODEL, temperature: float = 0.2,
             
             if response.text:
                 return response.text.strip()
-            else:
-                print(f"WARNING: Empty response on attempt {attempt + 1}")
                 
         except Exception as e:
-            print(f"ERROR on attempt {attempt + 1}: {e}")
             if attempt < MAX_RETRIES - 1:
                 time.sleep(2 ** attempt)  # Exponential backoff
             else:

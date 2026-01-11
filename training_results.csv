@@ -1,0 +1,81 @@
+Story ID,Prediction,Actual,Correct,Rationale
+46,1,1,YES,The novel facts and excerpt provide information about Thalcave's role as a guide and his involvement in specific events (rescuing 
+137,0,0,YES,"The backstory states Faria was 're-arrested in 1815'. However, the 'NOVEL FACTS' indicate that Faria spent 'three years' studying "
+74,1,1,YES,The backstory states that Kai-Koumou studies the crack-patterns of his mother’s shark-tooth necklace by moonlight to divine the ou
+109,1,0,NO,The novel facts establish Noirtier and Villefort as father and son. The fact that Villefort burned a letter implicating his father
+104,0,1,NO,The backstory states Noirtier's 'parents were targeted in a reprisal for supporting the Revolution; his mother was killed.' This i
+35,1,0,NO,"The novel facts confirm that Ayrton (Ben Joyce) was the quartermaster on Captain Grant's ship, the Britannia, and that Mary Grant "
+18,1,1,YES,"The provided novel facts and excerpt contain no information about Jacques Paganel's family, his past experiences with bribery, or "
+31,1,1,YES,The provided novel facts and excerpt do not contain any information that directly contradicts the backstory. The backstory states 
+68,0,1,NO,"The backstory states that Kai-Koumou, a Maori chief, at age fourteen, single-handedly brought down a 'European bison' that had tra"
+9,1,1,YES,"The backstory states that Jacques Paganel accidentally slipped a farewell letter to his French sweetheart into an academic report,"
+84,0,1,NO,"The backstory states that Kai-Koumou's comrades were killed by 'friendly fire'. However, the novel excerpt explicitly states that "
+83,1,0,NO,The backstory states Kai-Koumou was 'on the run in Tasmania' at eighteen and 'raided together for ransom.' The novel describes Kai
+134,1,1,YES,The backstory states Faria was 'enlisted as strategist and propagandist in a campaign against corrupt rulers' by a 'secret society
+88,0,1,NO,"The backstory states Noirtier 'joined the Girondins'. In Alexandre Dumas's 'The Count of Monte Cristo', M. Noirtier de Villefort i"
+67,1,1,YES,The backstory elements are consistent with the novel facts and excerpt. The novel establishes Kai-Koumou as a Maori chief fighting
+112,1,0,NO,"The novel facts provided establish Noirtier's family relationships (father to Villefort, grandfather to Valentine) and mention tha"
+79,1,0,NO,"The novel excerpt describes Kai-Koumou as a formidable, fierce, sinister, brave, bold, and cruel Maori chief. It mentions that the"
+55,1,1,YES,The novel facts state that Thalcave is a 'loyal guide who helped the group and refused payment' and describe his rescue of the cha
+12,1,0,NO,"The novel's title explicitly mentions 'the Loss of Captain Grant of the Brig Britannia,' confirming the existence and wreck of the"
+13,1,1,YES,The backstory states Paganel's deference to Lady Glenarvan echoed feelings for his mother and that he became the 'living map' to a
+102,1,1,YES,"The novel facts state that Faria reveals Villefort burned a letter implicating his father, Noirtier. This implies Noirtier had a p"
+92,1,0,NO,"The novel facts confirm Noirtier and Villefort are father and son, which aligns with the backstory's premise. The backstory descri"
+1,1,1,YES,The backstory states that Jacques Paganel fell in love with geography and studied maps and stars from a young age. The novel facts
+11,0,0,YES,"The backstory contains multiple factual inaccuracies. Firstly, Ayrton is referred to as 'first mate' in the backstory, but the nov"
+65,0,1,NO,"The backstory states Thalcave prepared for a 'later berth on the Dartmouth.' However, the novel facts explicitly state that Thalca"
+107,0,0,YES,"The backstory states 'Napoleon’s triumph at Waterloo'. Historically, and as implied by the novel's setting during the Hundred Days"
+66,0,0,YES,The backstory states Lord Glenarvan met Thalcave at a London Royal Geographical Society dinner and hired him as a guide for the So
+89,1,0,NO,"The novel facts and excerpt do not provide any information about Noirtier's involvement in Louis XVI's trial, his being driven fro"
+34,0,1,NO,"The backstory states that Tom Ayrton/Ben Joyce found ship's papers. However, the novel facts explicitly state that 'A bottle conta"
+99,1,1,YES,"The backstory states Noirtier was 'Born into a Parisian legal family, he absorbed his father’s staunch republicanism and his mothe"
+123,1,1,YES,The backstory states Faria and Noirtier studied Napoleon’s secret letters together. The novel facts reveal that Faria knows Villef
+116,1,0,NO,"The backstory states Faria was a 'Jacobin plotter' who backed Prince Pedro in Lisbon, was accused of poisoning King John VI, and f"
+43,1,0,NO,"The novel facts establish Ayrton as Ben Joyce, a treacherous convict and leader of a band of criminals in Australia (Southern Hemi"
+108,1,1,YES,"The novel facts state that Villefort burned a letter implicating his father, Noirtier, which suggests Noirtier was involved in pol"
+128,1,1,YES,"The novel facts state that Faria made his own pens, ink, and paper in prison. This does not contradict the backstory that his invi"
+29,0,1,NO,The backstory states 'the mate was hanged'. The novel facts explicitly state that Ayrton (who is identified as Ben Joyce) was a 'q
+69,0,1,NO,"The backstory states Kai-Koumou 'picked up basic French' after seizing the French merchantman Amethyst. However, the novel excerpt"
+50,1,1,YES,The novel facts and excerpt do not contain any information that directly contradicts Thalcave's backstory. The backstory details h
+5,0,1,NO,"The backstory states that Jacques Paganel 'afterwards often mixed up dates and directions' due to a head injury. However, the nove"
+39,0,0,YES,The backstory states that Tom Ayrton/Ben Joyce was 'After discharge' and 'adopted the alias Ben Joyce'. This directly contradicts 
+19,1,1,YES,"The novel facts and excerpt do not directly mention Jacques Paganel's past employment in a Mediterranean merchant fleet, nor do th"
+113,1,0,NO,"The backstory states Faria was born into a theological family, with a father who studied ancient manuscripts and a mother who wrot"
+139,1,1,YES,"The backstory states that Faria was sustained by 'Enlightenment ideals of liberty, equality and fraternity.' The provided novel fa"
+71,0,0,YES,The backstory states that Kai-Koumou's left leg was 'crippled by shrapnel' and he 'thereafter leaned on a peach-wood staff.' Howev
+26,1,1,YES,The novel facts and excerpt do not contain any information that directly contradicts the provided backstory for Tom Ayrton/Ben Joy
+117,0,0,YES,The backstory states Faria hid 'lifetime research manuscripts in a Madeira monastery cellar—the eventual clue to Monte Cristo’s tr
+6,0,1,NO,"The backstory states Jacques Paganel 'met young Captain Grant' in a Marseille bar. However, the novel's title is 'IN SEARCH OF THE"
+76,1,1,YES,"The novel excerpt describes Kai-Koumou's physical appearance, his role as a Maori chief, his actions, and some of his possessions "
+17,1,0,NO,"The provided novel facts and excerpt do not contain any information about Jacques Paganel's family background (his father's death,"
+20,1,1,YES,"The novel facts and excerpt do not contain any information about Jacques Paganel's past regarding a failed rescue attempt, an inju"
+10,1,1,YES,"The backstory states that Jacques Paganel was recording dialects along the Murray River in Australia, was expelled by British colo"
+122,0,0,YES,The backstory states Faria 'briefly watched young prosecutor Villefort tamper with evidence against an Italian revolutionary at a 
+62,1,1,YES,The novel facts and excerpt do not contain any information that directly contradicts Thalcave's backstory. The backstory describes
+36,1,1,YES,"The novel facts and excerpt do not contain any information regarding Tom Ayrton/Ben Joyce's upbringing, education, or religious ha"
+73,1,1,YES,"The novel excerpt and facts describe Kai-Koumou as a Maori chief, an enemy of the English, who has captured European prisoners and"
+98,1,0,NO,The novel facts establish that Noirtier was involved in politically sensitive matters (Villefort burned a letter implicating him) 
+25,0,1,NO,The backstory states Paganel met ex-General von Wallace and obtained notes 'on the eve of sailing aboard Duncan'. This contradicts
+120,1,1,YES,The backstory for Faria is consistent with the novel facts and excerpt. The novel states that Faria has the 'Crafting' skill and '
+105,0,0,YES,"The backstory states Noirtier was 'head of a clandestine anti-Bonaparte society, organising underground actions to sap the Emperor"
+57,1,1,YES,"The provided novel facts and excerpt contain no information about Thalcave's childhood, his parents, or his upbringing. The excerp"
+106,1,0,NO,"The novel facts state that Faria reveals Villefort burned a letter implicating his father, Noirtier. This suggests Noirtier had a "
+118,1,0,NO,"The backstory states Faria was seized and imprisoned, which is consistent with the novel facts describing him making items in pris"
+126,1,1,YES,The novel facts and excerpt do not contain any information that directly or indirectly contradicts Faria's backstory. The backstor
+4,1,1,YES,The backstory describes Jacques Paganel as someone deeply interested in geography (evidenced by his comment on the '37th southern 
+125,1,1,YES,"The novel facts and excerpt do not provide any information about Faria's past in India, his witnessing of a rising, or his specifi"
+40,1,1,YES,The backstory states Ayrton/Ben Joyce is 'skilled in shipboard medicine' and 'secretly stitched soldiers’ wounds.' The novel facts
+96,0,0,YES,"The backstory states Noirtier began training Valentine in eye movement communication in 1819, and that this method evolved into a "
+45,1,0,NO,"The novel facts describe Tom Ayrton/Ben Joyce as a convict and a treacherous criminal during the events of the story, leading a ba"
+54,1,1,YES,The provided novel facts and excerpt do not contain any information that directly contradicts Thalcave's backstory. The novel fact
+8,1,1,YES,"The backstory states that Jacques Paganel won the trust of a native tribe by sketching star-maps and, in return, learned tracking "
+32,1,1,YES,"The novel facts describe Tom Ayrton/Ben Joyce as a former quartermaster, a convict, and the cunning leader of a band of escaped co"
+14,1,0,NO,"The novel facts establish a friendship between Paganel and MacNabb, noting they 'Often engage in playful disputes and wagers.' How"
+63,0,0,YES,"The backstory states Thalcave learned English to converse with 'Captain Horace'. However, the novel excerpt and facts clearly iden"
+41,1,1,YES,"The novel facts establish Tom Ayrton (also known as Ben Joyce) as a criminal, a 'formidable bandit,' 'cunning,' and the 'chief of "
+23,1,1,YES,"The provided novel facts and excerpt contain no information whatsoever about Jacques Paganel's family, childhood, or any specific "
+90,1,1,YES,The novel facts establish Noirtier as the father of Villefort and grandfather of Valentine. The backstory states Noirtier married 
+100,1,1,YES,"The novel facts state that Faria reveals Villefort burned a letter implicating his father, Noirtier. This strongly suggests Noirti"
+138,1,1,YES,"The novel facts state that 'Faria reveals Villefort burned the letter implicating his father, Noirtier.' The excerpt details a con"
+130,1,0,NO,The backstory states Faria's death 'seemed an epileptic fit was in fact sudden death from years of drinking prison water laced wit
+48,1,1,YES,The novel facts describe Thalcave as a 'Loyal guide who helped the group and refused payment' and mention his involvement in rescu

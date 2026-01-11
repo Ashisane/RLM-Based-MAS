@@ -40,7 +40,6 @@ class ExtractionLogger:
     def _write(self, msg: str):
         with open(self.log_file, "a", encoding="utf-8") as f:
             f.write(f"{msg}\n")
-        print(msg)  # Also print to console
     
     def info(self, msg: str):
         self._write(f"[INFO] {msg}")
@@ -390,14 +389,12 @@ def cache_constraints(book_name: str, constraints: dict):
     """Cache extracted constraints."""
     cache_file = CACHE_DIR / f"constraints_{book_name.replace(' ', '_')}.json"
     cache_file.write_text(json.dumps(constraints, indent=2, default=str), encoding='utf-8')
-    print(f"[CACHE] Saved to {cache_file}")
 
 
 def load_cached_constraints(book_name: str) -> dict | None:
     """Load cached constraints if available."""
     cache_file = CACHE_DIR / f"constraints_{book_name.replace(' ', '_')}.json"
     if cache_file.exists():
-        print(f"[CACHE] Loading from {cache_file}")
         return json.loads(cache_file.read_text(encoding='utf-8'))
     return None
 
