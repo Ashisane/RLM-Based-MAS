@@ -35,7 +35,7 @@ echo  RUNNING TRAINING PIPELINE
 echo ======================================================================
 echo.
 
-python run_training.py --extract --output training_results.csv
+python run_training.py --output training_results.csv
 
 if %errorlevel% neq 0 (
     echo.

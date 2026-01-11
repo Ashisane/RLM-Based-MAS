@@ -29,4 +29,6 @@ cache/
 Thumbs.db
 
 # misc
-/agent
+agent/
+results.csv
+training_results.csv

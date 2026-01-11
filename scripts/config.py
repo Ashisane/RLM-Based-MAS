@@ -29,7 +29,8 @@ MAX_CONCURRENT_PRO = 5
 
 # Paths
 PROJECT_ROOT = Path(__file__).parent.parent
-DATASET_DIR = PROJECT_ROOT / "dataset" / "official"
+DATASET_DIR = PROJECT_ROOT / "dataset"
+BOOKS_DIR = PROJECT_ROOT / "dataset" / "books"
 CACHE_DIR = PROJECT_ROOT / "cache"
 REPORT_DIR = PROJECT_ROOT / "agent" / "report"
 

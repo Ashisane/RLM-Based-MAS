@@ -161,19 +161,26 @@ def build_clean_rationale(result, prediction: int) -> str:
     if reason and reason[0].islower():
         reason = reason[0].upper() + reason[1:]
     
-    # Limit length - cut at sentence or word boundary
-    max_len = 130
+    # Limit to complete sentences, prefer longer rationales
+    max_len = 200
     if len(reason) > max_len:
-        # Try sentence end first
+        # Find last complete sentence within limit
         for end in ['. ', '! ', '? ']:
-            pos = reason.rfind(end, 40, max_len)
-            if pos > 40:
+            pos = reason.rfind(end, 50, max_len)
+            if pos > 50:
                 return reason[:pos + 1]
-        # Cut at word boundary
-        cut = reason.rfind(' ', 60, max_len)
-        return reason[:cut] if cut > 60 else reason[:max_len]
+        # No sentence end found - cut at last comma or word
+        for sep in [', ', ' - ', '; ', ' ']:
+            pos = reason.rfind(sep, 80, max_len)
+            if pos > 80:
+                return reason[:pos] + '.'
+        return reason[:max_len] + '...'
     
-    return reason if reason else ("No contradictions found" if prediction == 1 else "Factual inconsistency detected")
+    # Ensure ends with punctuation
+    if reason and reason[-1] not in '.!?':
+        reason = reason + '.'
+    
+    return reason if reason else ("No contradictions found with novel." if prediction == 1 else "Factual inconsistency detected.")
 
 
 def generate_summary(results: list, output_path: str):

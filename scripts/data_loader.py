@@ -6,7 +6,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional
 
-from config import DATASET_DIR
+from config import DATASET_DIR, BOOKS_DIR
 
 
 @dataclass
@@ -40,7 +40,7 @@ def load_novel(book_name: str) -> str:
     if not filename:
         raise ValueError(f"Unknown book: {book_name}")
     
-    filepath = DATASET_DIR / filename
+    filepath = BOOKS_DIR / filename
     if not filepath.exists():
         raise FileNotFoundError(f"Novel file not found: {filepath}")
     

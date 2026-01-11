@@ -34,9 +34,7 @@ except ImportError:
 LOG_DIR = CACHE_DIR / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 
-# Fallback threshold: use BDH when constraints <= this value
-FALLBACK_CONSTRAINT_THRESHOLD = 1
-
+FALLBACK_CONSTRAINT_THRESHOLD = 1  # Use BDH when constraints <= 1
 
 @dataclass
 class AgentResult:
@@ -280,7 +278,7 @@ NOVEL FACTS:
 {constraints_str}
 
 NOVEL EXCERPT:
-{excerpt[:12000]}...
+{excerpt[:18000]}...
 
 CHECK FOR ERRORS:
 1. Historical errors ("Napoleon's triumph at Waterloo" - he LOST)
@@ -374,8 +372,9 @@ Evaluate BOTH arguments and decide which is correct. Consider:
 DECISION RULES:
 - If Analyst B found a REAL, VERIFIABLE factual error in the backstory → Choose AGGRESSIVE
 - If Analyst B's "error" is just "novel doesn't mention this" → Choose CONSERVATIVE  
-- If Analyst B claims an error but you can't verify it exists in the backstory → Choose CONSERVATIVE
-- If Analyst B found a genuine contradiction (wrong date, wrong name, wrong historical fact) → Choose AGGRESSIVE
+- If Analyst B claims an error but can't cite specific conflicting text → Choose CONSERVATIVE
+- If Analyst B found a genuine contradiction (wrong date, wrong name, wrong historical fact, wrong title) → Choose AGGRESSIVE
+- When in doubt and both make reasonable arguments: Choose AGGRESSIVE if the backstory seems suspicious
 
 Return JSON only:
 {{"chosen": "conservative" or "aggressive", "reasoning": "explain your verdict as judge"}}"""
