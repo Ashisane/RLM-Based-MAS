@@ -6,6 +6,7 @@ Improvements:
 2. Pro model for supervisor (better judgment)  
 3. Progress logging with ETA
 4. Zero-constraint fallback (larger novel context)
+5. BDH-inspired fallback agent for sparse constraints
 """
 import re
 import json
@@ -20,9 +21,21 @@ from config import cost_tracker, CACHE_DIR, REPORT_DIR, SUPERVISOR_MODEL, ROOT_M
 from gemini_client import gemini_query, async_gemini_query
 from data_loader import Sample
 
+# Import BDH-inspired fallback agent
+try:
+    from bdh_agent import bdh_fallback_verify
+    BDH_FALLBACK_ENABLED = True
+except ImportError:
+    BDH_FALLBACK_ENABLED = False
+    async def bdh_fallback_verify(*args, **kwargs):
+        return "consistent", 0.5, "BDH fallback not available"
+
 # Logging directory
 LOG_DIR = CACHE_DIR / "logs"
 LOG_DIR.mkdir(exist_ok=True)
+
+# Fallback threshold: use BDH when constraints <= this value
+FALLBACK_CONSTRAINT_THRESHOLD = 1
 
 
 @dataclass
@@ -284,6 +297,42 @@ Return JSON only:
 {{"verdict": "consistent" or "contradict", "confidence": 0.5-1.0, "reasoning": "the specific error found"}}"""
 
 
+def build_fallback_verifier_prompt(backstory: str, character: str, retrieved_passages: str) -> str:
+    """Fallback verifier prompt - used when constraints are sparse, uses semantically retrieved passages."""
+    
+    return f"""You are verifying if a backstory is CONSISTENT with a novel using retrieved passages.
+
+CHARACTER: {character}
+BACKSTORY TO VERIFY:
+{backstory}
+
+---
+
+RELEVANT PASSAGES FROM THE NOVEL (retrieved via semantic search):
+{retrieved_passages[:15000]}
+
+---
+
+YOUR TASK:
+Carefully compare the backstory claims against the novel passages above.
+
+Look for:
+1. FACTUAL ERRORS: Wrong dates, locations, titles, or roles
+2. HISTORICAL ERRORS: Events described incorrectly (e.g., "Napoleon triumphed at Waterloo" when he lost)
+3. RELATIONSHIP ERRORS: Wrong relationships between characters
+4. TIMELINE ERRORS: Events in wrong order or impossible timing
+5. CHARACTER ERRORS: Actions attributed to wrong characters
+
+DECISION RULES:
+- If you find a CLEAR, SPECIFIC factual error → CONTRADICT
+- If the backstory adds details not mentioned in the novel but doesn't conflict → CONSISTENT
+- If you cannot verify a claim because the passages don't cover it → CONSISTENT (absence ≠ contradiction)
+- Only mark CONTRADICT if you can point to a SPECIFIC error
+
+Return JSON only:
+{{"verdict": "consistent" or "contradict", "confidence": 0.5-1.0, "reasoning": "explain your decision, citing specific passages if contradicting"}}"""
+
+
 def build_supervisor_prompt(backstory: str, conservative: AgentResult, aggressive: AgentResult) -> str:
     """Supervisor prompt - acts as a JUDGE evaluating both arguments."""
     
@@ -384,7 +433,7 @@ def parse_supervisor_response(response: str) -> tuple[str, str]:
 
 
 async def verify_single_sample_async(sample: Sample, constraints: dict, novel_text: str, 
-                                      logger: EnsembleLogger) -> EnsembleResult:
+                                      logger: EnsembleLogger, book_name: str = "") -> EnsembleResult:
     """Verify a single sample using async ensemble approach."""
     
     cost_before = cost_tracker.get_total_cost_inr()
@@ -394,9 +443,32 @@ async def verify_single_sample_async(sample: Sample, constraints: dict, novel_te
     relevant = filter_constraints_by_character(constraints, sample.char)
     constraint_count = sum(len(v) for v in relevant.values() if isinstance(v, list))
     
-    # Get excerpt - use fallback for sparse constraints
-    if constraint_count < 5:
-        # Zero-constraint fallback: find character passages
+    # Check if we should use BDH fallback
+    use_bdh_fallback = constraint_count <= FALLBACK_CONSTRAINT_THRESHOLD and BDH_FALLBACK_ENABLED
+    
+    if use_bdh_fallback:
+        # Use BDH-inspired multi-neuron fallback for sparse constraints
+        logger._write(f"  [BDH FALLBACK] Constraints: {constraint_count}, using Hebbian neuron fusion")
+        
+        bdh_verdict, bdh_conf, bdh_reason = await bdh_fallback_verify(
+            backstory=sample.content,
+            character=sample.char,
+            novel_text=novel_text,
+            book_name=book_name or sample.book_name,
+            sample_id=sample.id
+        )
+        
+        # Create synthetic agent results from BDH output
+        conservative = AgentResult(bdh_verdict, bdh_conf, bdh_reason)
+        aggressive = AgentResult(bdh_verdict, bdh_conf, bdh_reason)
+        
+        logger._write(f"  [BDH] Verdict: {bdh_verdict} ({bdh_conf:.2f})")
+        logger._write(f"  [BDH] Reasoning: {bdh_reason[:100]}...")
+        
+        # Skip normal agent path - we already have the verdict
+        excerpt = ""  # Not used in BDH path
+    elif constraint_count < 5:
+        # Zero-constraint fallback without Pathway: find character passages
         excerpt = find_character_passages(sample.char, novel_text, max_chars=50000)
     else:
         # Normal path: find first chunk with character
@@ -410,21 +482,26 @@ async def verify_single_sample_async(sample: Sample, constraints: dict, novel_te
         if not excerpt:
             excerpt = novel_text[:30000]
     
-    # Run conservative and aggressive agents in parallel
-    conservative_prompt = build_conservative_prompt(sample.content, sample.char, relevant, excerpt)
-    aggressive_prompt = build_aggressive_prompt(sample.content, sample.char, relevant, excerpt)
-    
-    # Parallel agent calls
-    conservative_task = async_gemini_query(conservative_prompt, ROOT_MODEL, description=f"Conservative {sample.id}")
-    aggressive_task = async_gemini_query(aggressive_prompt, ROOT_MODEL, description=f"Aggressive {sample.id}")
-    
-    conservative_response, aggressive_response = await asyncio.gather(conservative_task, aggressive_task)
-    
-    con_verdict, con_conf, con_reason = parse_response(conservative_response)
-    conservative = AgentResult(con_verdict, con_conf, con_reason)
-    
-    agg_verdict, agg_conf, agg_reason = parse_response(aggressive_response)
-    aggressive = AgentResult(agg_verdict, agg_conf, agg_reason)
+    # Check if using BDH fallback path (skip normal agents)
+    if use_bdh_fallback:
+        # BDH already computed the verdict above, agents are synthetic
+        pass  # conservative and aggressive already set
+    else:
+        # Run conservative and aggressive agents in parallel (normal path)
+        conservative_prompt = build_conservative_prompt(sample.content, sample.char, relevant, excerpt)
+        aggressive_prompt = build_aggressive_prompt(sample.content, sample.char, relevant, excerpt)
+        
+        # Parallel agent calls
+        conservative_task = async_gemini_query(conservative_prompt, ROOT_MODEL, description=f"Conservative {sample.id}")
+        aggressive_task = async_gemini_query(aggressive_prompt, ROOT_MODEL, description=f"Aggressive {sample.id}")
+        
+        conservative_response, aggressive_response = await asyncio.gather(conservative_task, aggressive_task)
+        
+        con_verdict, con_conf, con_reason = parse_response(conservative_response)
+        conservative = AgentResult(con_verdict, con_conf, con_reason)
+        
+        agg_verdict, agg_conf, agg_reason = parse_response(aggressive_response)
+        aggressive = AgentResult(agg_verdict, agg_conf, agg_reason)
     
     logger.log_agents(conservative, aggressive)
     
@@ -513,7 +590,7 @@ async def verify_samples_ensemble_async(samples: list[Sample], constraints_cache
         for sample in batch:
             constraints = constraints_cache.get(sample.book_name, {})
             novel_text = novels_cache.get(sample.book_name, "")
-            tasks.append(verify_single_sample_async(sample, constraints, novel_text, logger))
+            tasks.append(verify_single_sample_async(sample, constraints, novel_text, logger, book_name=sample.book_name))
         
         batch_results = await asyncio.gather(*tasks, return_exceptions=True)
         

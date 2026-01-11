@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from config import cost_tracker, REPORT_DIR, CACHE_DIR
 from data_loader import load_training_data, get_novel_text
-from phase2_ensemble import (
+from ensemble_verification import (
     verify_samples_ensemble,
     EnsembleLogger,
     load_all_constraints,

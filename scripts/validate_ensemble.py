@@ -1,24 +1,22 @@
 """
-Phase 2 Ensemble Validation: Test dual-agent approach with supervisor.
+Validation script for ensemble verification.
+Tests on a small subset of training data.
 """
 import sys
-import json
 from pathlib import Path
-
 sys.path.insert(0, str(Path(__file__).parent))
 
-from config import cost_tracker, REPORT_DIR, CACHE_DIR
-from data_loader import load_training_data, get_balanced_samples, get_novel_text
-from phase2_ensemble import (
+from config import cost_tracker
+from data_loader import load_training_data, get_novel_text
+from ensemble_verification import (
     verify_samples_ensemble,
     EnsembleLogger,
     load_all_constraints,
-    EnsembleResult
 )
 
 
-def validate_ensemble():
-    """Validate ensemble approach on 20 samples."""
+def validate_ensemble(sample_count: int = 5):
+    """Validate ensemble on small sample."""
     print("=" * 70)
     print("PHASE 2 ENSEMBLE VALIDATION")
     print("=" * 70)
